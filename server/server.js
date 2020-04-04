@@ -20,6 +20,12 @@ mongoose.connect(config.mongoUri,  { useNewUrlParser: true })
             app.use('/', userRoutes);
             app.use('/', authRoutes);
 
+            app.use((err, req, res, next) => {
+                if (err.name === 'UnauthorizedError') {
+                    res.status(401).json({"error" : err.name + ": " + err.message});
+                }
+            });
+
         });
     })
     .catch(err => console.log(err));
