@@ -5,9 +5,13 @@ import cookieParser from 'cookie-parser';
 import compress from 'compression';
 import cors from 'cors';
 import helmet from 'helmet';
-import Template from './../template'
+
+import Template from './../template';
+import devBundle from './devBundle';
 
 const app = express();
+
+devBundle.compile(app);
 
 // parse body params and attache them to req.body
 app.use(bodyParser.json());
