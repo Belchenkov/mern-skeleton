@@ -13,7 +13,7 @@ export default () => {
           </style>
         </head>
         <body style="margin:0">
-          <div id="root">Hello World</div>
+          <div id="root"></div>
           <script type="text/javascript" src="/dist/bundle.js"></script>
         </body>
       </html>`
