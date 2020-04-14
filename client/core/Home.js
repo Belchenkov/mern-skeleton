@@ -5,6 +5,8 @@ import Card, { CardContent, CardMedia } from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
 
 import seashellImg from './../assets/images/seashell.jpg';
+import Button from "material-ui/Button";
+import {Link} from "react-router-dom";
 
 const styles = theme => ({
     card: {
@@ -34,6 +36,15 @@ class Home extends Component {
                         component="h2"
                         className={classes.title}
                     >Home Page</Typography>
+                    <Link to="/signin">
+                        <Button
+                            color="primary"
+                            autoFocus="autoFocus"
+                            variant="raised"
+                        >
+                            Sign In
+                        </Button>
+                    </Link>
                     <CardMedia
                         className={classes.media}
                         image={seashellImg}
