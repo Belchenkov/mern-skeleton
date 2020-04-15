@@ -36,15 +36,6 @@ class Home extends Component {
                         component="h2"
                         className={classes.title}
                     >Home Page</Typography>
-                    <Link to="/signin">
-                        <Button
-                            color="primary"
-                            autoFocus="autoFocus"
-                            variant="raised"
-                        >
-                            Sign In
-                        </Button>
-                    </Link>
                     <CardMedia
                         className={classes.media}
                         image={seashellImg}
