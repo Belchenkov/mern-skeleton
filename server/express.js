@@ -5,9 +5,17 @@ import cookieParser from 'cookie-parser';
 import compress from 'compression';
 import cors from 'cors';
 import helmet from 'helmet';
-import Template from './../template'
+
+import Template from './../template';
+import devBundle from './devBundle';
 
 const app = express();
+
+devBundle.compile(app);
+
+// Serving static files with Express
+const CURRENT_WORKING_DIR = process.cwd();
+app.use('/dist', express.static(path.join(CURRENT_WORKING_DIR, 'dist')));
 
 // parse body params and attache them to req.body
 app.use(bodyParser.json());
