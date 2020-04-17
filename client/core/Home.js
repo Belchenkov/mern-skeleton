@@ -6,7 +6,7 @@ import Typography from 'material-ui/Typography';
 
 import seashellImg from './../assets/images/seashell.jpg';
 import Button from "material-ui/Button";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const styles = theme => ({
     card: {
@@ -43,6 +43,7 @@ class Home extends Component {
                     />
                     <CardContent>
                         <Typography type="body1" component="p">
+                            <Link to={'/signin'}>Singin</Link>
                             Welcome to the MERN Skeleton home page
                         </Typography>
                     </CardContent>

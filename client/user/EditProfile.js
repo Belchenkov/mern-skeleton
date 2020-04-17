@@ -6,10 +6,10 @@ import TextField from 'material-ui/TextField';
 import Typography from 'material-ui/Typography';
 import Icon from 'material-ui/Icon';
 import PropTypes from 'prop-types';
-import {withStyles} from 'material-ui/styles';
+import { withStyles } from 'material-ui/styles';
 
 import auth from './../auth/auth-helper';
-import { signin } from './api-auth.js';
+import { update } from './api-user.js';
 
 const styles = theme => ({
     card: {
@@ -19,12 +19,12 @@ const styles = theme => ({
         marginTop: theme.spacing.unit * 5,
         paddingBottom: theme.spacing.unit * 2
     },
+    title: {
+        margin: theme.spacing.unit * 2,
+        color: theme.palette.protectedTitle
+    },
     error: {
         verticalAlign: 'middle'
-    },
-    title: {
-        marginTop: theme.spacing.unit * 2,
-        color: theme.palette.openTitle
     },
     textField: {
         marginLeft: theme.spacing.unit,
@@ -35,29 +35,54 @@ const styles = theme => ({
         margin: 'auto',
         marginBottom: theme.spacing.unit * 2
     }
-});
+})
 
-class Signin extends Component {
-    state = {
-        email: '',
-        password: '',
-        error: '',
-        redirectToReferrer: false
+class EditProfile extends Component {
+    constructor({match}) {
+        super();
+        this.state = {
+            name: '',
+            email: '',
+            password: '',
+            redirectToProfile: false,
+            error: ''
+        };
+
+        this.match = match;
+    }
+
+    componentDidMount = () => {
+        const jwt = auth.isAuthenticated();
+
+        read(
+            { userId: this.match.params.userId },
+            {token: jwt.token}
+        ).then(data => {
+            if (data.error) {
+                this.setState({error: data.error});
+            } else {
+                this.setState({name: data.name, email: data.email});
+            }
+        })
     }
 
     clickSubmit = () => {
+        const jwt = auth.isAuthenticated();
         const user = {
+            name: this.state.name || undefined,
             email: this.state.email || undefined,
             password: this.state.password || undefined
         };
 
-        signin(user).then(data => {
+        update(
+            { userId: this.match.params.userId },
+            { token: jwt.token },
+            user
+        ).then(data => {
             if (data.error) {
                 this.setState({error: data.error});
             } else {
-                auth.authenticate(data, () => {
-                    this.setState({redirectToReferrer: true});
-                });
+                this.setState({'userId': data._id, 'redirectToProfile': true});
             }
         });
     }
@@ -68,11 +93,10 @@ class Signin extends Component {
 
     render() {
         const { classes } = this.props;
-        const { from } = this.props.location.state || { from: {pathname: '/' }};
-        const { redirectToReferrer } = this.state;
 
-        if (redirectToReferrer)
-            return (<Redirect to={from}/>);
+        if (this.state.redirectToProfile) {
+            return (<Redirect to={`/user/${this.state.userId}`}/>)
+        }
 
         return (
             <Card className={classes.card}>
@@ -82,19 +106,27 @@ class Signin extends Component {
                         component="h2"
                         className={classes.title}
                     >
-                        Sign In
+                        Edit Profile
                     </Typography>
+                    <TextField
+                        id="name"
+                        label="Name"
+                        className={classes.textField}
+                        value={this.state.name}
+                        onChange={this.handleChange('name')}
+                        margin="normal"
+                    /><br/>
                     <TextField
                         id="email"
                         type="email"
                         label="Email"
-                        className={() => classes.textField}
+                        className={classes.textField}
                         value={this.state.email}
-                        onChange={() => this.handleChange('email')}
+                        onChange={this.handleChange('email')}
                         margin="normal"
                     />
                     <br/>
-                    {/*<TextField
+                    <TextField
                         id="password"
                         type="password"
                         label="Password"
@@ -103,7 +135,7 @@ class Signin extends Component {
                         onChange={this.handleChange('password')}
                         margin="normal"
                     />
-                    <br/>*/}
+                    <br/>
                     { this.state.error && (
                         <Typography component="p" color="error">
                             <Icon color="error" className={classes.error}>error</Icon>
@@ -112,20 +144,15 @@ class Signin extends Component {
                     )}
                 </CardContent>
                 <CardActions>
-                    <Button
-                        color="primary"
-                        variant="raised"
-                        onClick={this.clickSubmit}
-                        className={classes.submit}
-                    >Submit</Button>
+                    <Button color="primary" variant="raised" onClick={this.clickSubmit} className={classes.submit}>Submit</Button>
                 </CardActions>
             </Card>
-        )
+        );
     }
 }
 
-/*Signin.propTypes = {
+EditProfile.propTypes = {
     classes: PropTypes.object.isRequired
-};*/
+};
 
-export default withStyles(styles)(Signin);
+export default withStyles(styles)(EditProfile);
