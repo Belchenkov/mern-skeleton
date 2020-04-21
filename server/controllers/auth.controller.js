@@ -3,11 +3,13 @@ import jwt from 'jsonwebtoken';
 import expressJwt from 'express-jwt';
 import config from './../../config/config';
 
-const signin = (req, res) => {
-    User.findOne({
-        "email": req.body.email
-    }, (err, user) => {
-        if (err || !user)
+const signin = async (req, res) => {
+    try {
+        let user = await User.findOne({
+            "email": req.body.email
+        });
+
+        if (!user)
             return res.status('401').json({
                 error: "User not found"
             });
@@ -18,21 +20,28 @@ const signin = (req, res) => {
             });
         }
 
-        const token = jwt.sign(
-            {_id: user._id},
-            config.jwtSecret
-        );
+        const token = jwt.sign({
+            _id: user._id
+        }, config.jwtSecret);
 
-        res.cookie("token", token, {
+        res.cookie("t", token, {
             expire: new Date() + 9999
         });
 
         return res.json({
             token,
-            user: {_id: user._id, name: user.name, email: user.email}
+            user: {
+                _id: user._id,
+                name: user.name,
+                email: user.email
+            }
         });
-    })
-};
+    } catch (err) {
+        return res.status('401').json({
+            error: "Could not sign in"
+        });
+    }
+}
 
 const requireSignin = expressJwt({
     secret: config.jwtSecret,
@@ -40,10 +49,10 @@ const requireSignin = expressJwt({
 });
 
 const signout = (req, res) => {
-    res.clearCookie("token");
+    res.clearCookie("t");
 
     return res.status('200').json({
-        message: "Signed Out"
+        message: "signed out"
     });
 };
 
