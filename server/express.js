@@ -7,11 +7,11 @@ import cors from 'cors';
 import helmet from 'helmet';
 
 import Template from './../template';
-import devBundle from './devBundle';
+import devBundle from './devBundle'; //comment out before building for production
 
 const app = express();
 
-devBundle.compile(app);
+devBundle.compile(app); //comment out before building for production
 
 // Serving static files with Express
 const CURRENT_WORKING_DIR = process.cwd();

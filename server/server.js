@@ -8,7 +8,11 @@ import authRoutes from './routes/auth.routes';
 
 // Connection URL
 mongoose.Promise = global.Promise;
-mongoose.connect(config.mongoUri,  { useNewUrlParser: true })
+mongoose.connect(config.mongoUri,  {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true
+})
     .then(() => {
         console.log('MongoDB connecting');
 
@@ -29,6 +33,7 @@ mongoose.connect(config.mongoUri,  { useNewUrlParser: true })
         });
     })
     .catch(err => console.log(err));
+
 mongoose.connection.on('error', () => {
     throw new Error(`unable to connect to database: ${mongoUri}`)
 });
