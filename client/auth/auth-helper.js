@@ -16,7 +16,7 @@ const auth = {
 
         cb();
     },
-    signout(cb) {
+    clearJWT(cb) {
         if (typeof window !== "undefined") {
             sessionStorage.removeItem('jwt');
         }
@@ -25,12 +25,9 @@ const auth = {
 
         //optional
         signout().then(data => {
-            document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
+            document.cookie = "t=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
         });
     }
 };
-
-
-
 
 export default auth;
