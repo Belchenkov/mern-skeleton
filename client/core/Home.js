@@ -43,6 +43,7 @@ export default function Home() {
             </Typography>
             <Link to="/users">Users</Link>
             <Link to="/signup">SignUp</Link>
+            <Link to="/signin">SignIn</Link>
 
             <CardMedia
                 className={classes.media}
