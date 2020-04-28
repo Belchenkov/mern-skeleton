@@ -1,6 +1,4 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Link } from "react-router-dom";
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -41,10 +39,6 @@ export default function Home() {
             <Typography variant="h6" className={classes.title}>
                 Home Page
             </Typography>
-            <Link to="/users">Users</Link>
-            <Link to="/signup">SignUp</Link>
-            <Link to="/signin">SignIn</Link>
-
             <CardMedia
                 className={classes.media}
                 image={unicornbikeImg}
