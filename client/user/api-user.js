@@ -56,7 +56,7 @@ const update = async (params, credentials, user) => {
         })
         return await response.json();
     } catch(err) {
-        console.log(err)
+        console.log(err);
     }
 };
 
