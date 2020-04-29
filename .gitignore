@@ -3,4 +3,7 @@
 /data/
 npm-debug.log
 .idea
+/.idea
 .vscode
+/.vscode
+debug.log
