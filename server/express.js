@@ -6,6 +6,9 @@ import compress from 'compression';
 import cors from 'cors';
 import helmet from 'helmet';
 
+import userRoutes from './routes/user.routes';
+import authRoutes from './routes/auth.routes';
+
 import Template from './../template';
 import devBundle from './devBundle'; //comment out before building for production
 
@@ -37,9 +40,9 @@ app.use(helmet());
 // enable CORS - Cross Origin Resource Sharing
 app.use(cors());
 
-app.get('/', (req, res) => {
-    res.status(200).send(Template());
-});
+// mount routes
+app.use('/', userRoutes);
+app.use('/', authRoutes);
 
 app.get('*', (req, res) => {
     const sheets = new ServerStyleSheets();
