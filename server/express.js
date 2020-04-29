@@ -42,8 +42,8 @@ app.get('/', (req, res) => {
 });
 
 app.get('*', (req, res) => {
-    const sheets = new ServerStyleSheets()
-    const context = {}
+    const sheets = new ServerStyleSheets();
+    const context = {};
     const markup = ReactDOMServer.renderToString(
         sheets.collect(
             <StaticRouter location={req.url} context={context}>
@@ -52,15 +52,18 @@ app.get('*', (req, res) => {
                 </ThemeProvider>
             </StaticRouter>
         )
-    )
+    );
+
     if (context.url) {
-        return res.redirect(303, context.url)
+        return res.redirect(303, context.url);
     }
-    const css = sheets.toString()
+
+    const css = sheets.toString();
+
     res.status(200).send(Template({
         markup: markup,
         css: css
-    }))
+    }));
 })
 
 // Catch unauthorised errors
