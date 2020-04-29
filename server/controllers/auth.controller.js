@@ -57,7 +57,6 @@ const signout = (req, res) => {
 };
 
 const hasAuthorization = (req, res, next) => {
-    console.log(req.profile, req.auth);
     const authorized = req.profile && req.auth && req.profile._id == req.auth._id;
 
     if (!(authorized)) {
